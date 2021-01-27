@@ -1,0 +1,19 @@
+---
+- name: Copy systemd service file to server
+  copy:
+    src: hello.service
+    dest: /etc/systemd/system
+    owner: root
+    group: root
+  notify:
+    - Start hello
+
+- name: Copy script to server
+  copy:
+    src: hello.sh
+    dest: /usr/local/bin
+    mode: 0755
+    owner: root
+    group: root
+  notify:
+    - Start hello

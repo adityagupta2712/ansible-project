@@ -1,0 +1,17 @@
+---
+- name: install all updates
+  yum:
+    name: '*'
+    update_cache: yes
+    state: latest
+
+- name: install additional packages
+  yum: name={{item}} state=present update_cache=true
+  loop:
+    - screen
+    - vim
+    - htop
+    - atop
+    - git
+    - unbound
+    - monit

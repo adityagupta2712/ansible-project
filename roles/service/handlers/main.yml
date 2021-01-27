@@ -1,0 +1,6 @@
+---
+- name: Start hello
+  systemd:
+    name: hello
+    state: started
+    enabled: yes

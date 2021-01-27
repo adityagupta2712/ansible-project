@@ -1,0 +1,38 @@
+---
+- name: Add remi-php74
+  yum_repository:
+    name: remi-php74
+    description: Remi's PHP 7.4 RPM repository for Enterprise Linux $releasever - $basearch
+    mirrorlist: http://rpms.remirepo.net/enterprise/$releasever/php74/mirror
+    enabled: yes
+    gpgcheck: 1
+    gpgkey: http://rpms.remirepo.net/RPM-GPG-KEY-remi
+
+- name: install php-fpm and its deps
+  yum: name={{item}} state=present update_cache=true
+  loop:
+    - php
+    - php-fpm
+    - php-mbstring
+    - php-mcrypt
+    - php-pdo
+    - php-mysql
+    - php-xml
+    - php-gd
+  tags: php-fpm
+
+- name: backup default php configuration
+  shell: /bin/cp /etc/php.ini /etc/php.default.ini creates=/etc/php.default.ini
+  tags: php-fpm
+
+- name: backup default php-fpm configuration
+  shell: /bin/cp /etc/php-fpm.d/www.conf /etc/php-fpm.d/www.conf.default creates=/etc/php-fpm.d/www.conf.default
+  tags: php-fpm
+
+- name: Disable default pool
+  command: mv /etc/php-fpm.d/www.conf /etc/php-fpm.d/www.disabled creates=/etc/php-fpm.d/www.disabled
+  notify: restart php-fpm
+
+- name: Copy php-fpm configuration
+  template: src=wordpress.conf dest=/etc/php-fpm.d/
+  notify: restart php-fpm

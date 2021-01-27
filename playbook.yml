@@ -1,0 +1,16 @@
+---
+- name: Install Nginx PHP-FPM Percona-MySQL 
+  hosts: localhost
+  remote_user: root
+  # remote_user: user
+  # sudo: yes
+  roles:
+    - common
+    - user
+    - packages
+    - ntp
+    - nginx
+    - php-fpm
+    - percona-mysql
+    - wordpress
+    - service

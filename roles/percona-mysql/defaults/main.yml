@@ -1,0 +1,14 @@
+---
+# defaults file for ansible-role-percona-server-setup
+
+# the db group
+USER: mysql
+
+# the db user
+GROUP: mysql
+
+# percona server version
+PERCONA_SERVER_VERSION: 5.7.32-35
+
+# percona server
+PERCONA_SERVER_FILE: https://downloads.percona.com/downloads/Percona-Server-5.7/Percona-Server-5.7.32-35/binary/redhat/7/x86_64/Percona-Server-5.7.32-35-r5688520-el7-x86_64-bundle.tar

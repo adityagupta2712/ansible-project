@@ -1,0 +1,40 @@
+---
+
+- name: allow ntp through firewall
+  shell: firewall-cmd --add-service=ntp --permanent
+
+- name: firewall reload
+  shell: firewall-cmd --reload
+
+- name: Make sure Chrony is started up
+  service: name=chronyd state=started enabled=yes
+  tags: chrony
+
+- name: set timezone
+  shell: timedatectl set-timezone Asia/Singapore
+
+- name: Install NTP
+  yum: name=ntp state=installed
+  tags: ntp
+
+- name: Copy over the NTP configuration
+  template: src=./templates/ntp.conf dest=/etc/ntp.conf
+  notify:
+    - restart ntpd
+  tags: ntp
+
+- name: Make sure NTP is stopped
+  service: name=ntpd state=stopped enabled=yes
+  tags: ntp
+
+- name: Sync time initialy
+  shell: ntpdate 0.sg.pool.ntp.org
+  tags: ntp
+
+- name: Make sure NTP is started up
+  service: name=ntpd state=started enabled=yes
+  tags: ntp
+
+- name: Sync hwclock
+  shell: hwclock -w
+  tags: ntp

@@ -1,0 +1,8 @@
+[Unit]
+Description=hello service
+
+[Service]
+ExecStart=/usr/local/bin/hello.sh
+
+[Install]
+WantedBy=multi-user.target
